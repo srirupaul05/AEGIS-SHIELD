@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AEGIS-SHIELD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header class="top">
+    <div>
+      <p id="greet" class="muted"></p>
+      <h1>AEGIS-SHIELD</h1>
+    </div>
+    <a class="btn112" href="tel:112">Call 112</a>
+  </header>
+
+  <!-- ================= HOME ================= -->
+  <main id="home">
+    <div id="statusCard" class="card status">
+      <strong id="statusTitle">Checking setup...</strong>
+      <span id="statusText" class="muted"></span>
+    </div>
+
+    <div class="sos-area">
+      <button id="sosBtn" class="sos" aria-label="Hold to start SOS">
+        <span class="disc"><b>SOS</b><small>Hold for 1.5 seconds</small></span>
+      </button>
+      <p class="muted center">Hold to start. You can still cancel for 5 seconds.</p>
+    </div>
+
+    <div class="quick">
+      <button id="fakeBtn" class="chip">Fake call</button>
+      <button id="shareBtn" class="chip">Share my location</button>
+    </div>
+
+    <section class="card">
+      <h2>Is your phone ready?</h2>
+      <ul id="checklist" class="checklist">
+        <li><button data-check="contacts"><i class="tick"></i><span>Trusted
+              contacts<small>Checking</small></span></button></li>
+        <li><button data-check="location"><i class="tick"></i><span>Location
+              access<small>Checking</small></span></button></li>
+        <li><button data-check="biometric"><i class="tick"></i><span>Fingerprint
+              check<small>Optional</small></span></button></li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- ================= CONTACTS ================= -->
+  <main id="contacts" hidden>
+    <div class="card">
+      <h2>Add a trusted contact</h2>
+      <form id="contactForm" class="form">
+        <label>Name
+          <input name="name" required maxlength="40" autocomplete="off">
+        </label>
+        <label>Phone number
+          <input name="phone" required inputmode="tel" pattern="[0-9+ ]{10,15}" placeholder="+91 98765 43210">
+        </label>
+        <label>Relationship
+          <select name="relation">
+            <option>Family</option>
+            <option>Friend</option>
+            <option>Partner</option>
+            <option>Colleague</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label class="switch">
+          <input type="checkbox" name="notify" checked>
+          <span>Alert this person during SOS</span>
+        </label>
+        <button type="submit" class="primary">Save contact</button>
+      </form>
+    </div>
+    <section>
+      <h2 id="contactsTitle">Your contacts</h2>
+      <ul id="contactList" class="contact-list"></ul>
+    </section>
+  </main>
+
+  <!-- ================= SOS: countdown + emergency dashboard ================= -->
+  <div id="countdown" class="overlay" hidden>
+    <p class="muted">Alerting your contacts in</p>
+    <div id="cdNum" class="cd-num">5</div>
+    <button id="cancelCd" class="big-btn">Cancel</button>
+  </div>
+
+  <div id="emergency" class="overlay top" hidden>
+    <div class="em-head">
+      <div>
+        <h2>SOS is active</h2>
+        <p id="emTime" class="muted">Active for 00:00</p>
+      </div>
+      <a class="btn112" href="tel:112">Call 112</a>
+    </div>
+    <div id="map" class="map"></div>
+    <p id="mapMsg" class="card muted" hidden>The map needs an internet connection. Your coordinates below still update.
+    </p>
+    <div class="card">
+      <dl class="info">
+        <dt>Location</dt>
+        <dd id="coords">Finding you...</dd>
+        <dt>Last update</dt>
+        <dd id="lastUpdate">Not yet</dd>
+        <dt>Refresh</dt>
+        <dd id="refreshNote"></dd>
+      </dl>
+    </div>
+    <section>
+      <h2>Alert your contacts</h2>
+      <ul id="emContacts" class="contact-list"></ul>
+    </section>
+    <button class="chip rec-btn" data-label="Record audio evidence">Record audio evidence</button>
+    <button id="stopBtn" class="primary">I am safe, stop SOS</button>
+  </div>
+
+  <!-- ================= SETTINGS ================= -->
+  <main id="settings" hidden>
+    <div class="card">
+      <h2>About you</h2>
+      <div class="form">
+        <label>Your first name
+          <input id="setName" maxlength="30" placeholder="Riya" autocomplete="off">
+        </label>
+        <label>SOS message
+          <textarea id="setMsg" maxlength="160" rows="3"></textarea>
+        </label>
+      </div>
+      <p class="muted">Your name and message start every alert text. Your location link is added automatically.</p>
+    </div>
+
+    <div class="card">
+      <h2>During SOS</h2>
+      <div class="form">
+        <label>Update my location every
+          <select id="setSecs">
+            <option value="10">10 seconds</option>
+            <option value="15">15 seconds</option>
+            <option value="30">30 seconds</option>
+            <option value="60">60 seconds</option>
+          </select>
+        </label>
+      </div>
+      <p class="muted">Shorter gives a fresher location but uses more battery.</p>
+    </div>
+
+    <div class="card">
+      <h2>Fake call</h2>
+      <div class="form">
+        <label>Caller name
+          <input id="setCaller" maxlength="30" placeholder="Mom" autocomplete="off">
+        </label>
+        <label>Rings after
+          <select id="setDelay">
+            <option value="5">5 seconds</option>
+            <option value="10">10 seconds</option>
+            <option value="30">30 seconds</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Protection</h2>
+      <div class="form">
+        <label class="switch">
+          <input type="checkbox" id="setBio">
+          <span>Check my fingerprint or face before SOS</span>
+        </label>
+      </div>
+      <p class="muted">Helps stop accidental alerts. If the check fails, hold SOS again. Call 112 always works.</p>
+    </div>
+
+    <div class="card">
+      <h2>Good to know</h2>
+      <p class="muted">Volume-button SOS needs a native Android app, because browsers cannot read hardware buttons. It
+        is planned for the next version.</p>
+    </div>
+
+    <button id="clearData" class="danger-btn">Delete all my data</button>
+  </main>
+
+  <!-- ================= TOOLS: fake call + audio evidence ================= -->
+  <main id="tools" hidden>
+    <div class="card">
+      <h2>Fake call</h2>
+      <p class="muted">A call from <b id="toolCaller">Mom</b> arrives so you have a reason to leave. Change the name and
+        delay in Settings.</p>
+      <div class="row2">
+        <button id="fakeLater" class="primary">Ring in <span id="toolDelay">10</span> seconds</button>
+        <button id="fakeNow" class="chip">Ring now</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Audio evidence</h2>
+      <p class="muted">Recording starts only after you agree. A bar stays on screen the whole time, and files stay on
+        this phone.</p>
+      <button id="recBtn" class="primary rec-btn" data-label="Start recording">Start recording</button>
+    </div>
+
+    <section>
+      <h2 id="evTitle">Saved recordings</h2>
+      <ul id="evList" class="contact-list"></ul>
+    </section>
+  </main>
+
+  <div id="fakeCall" class="overlay" hidden>
+    <p class="muted">mobile</p>
+    <div id="callName" class="call-name">Mom</div>
+    <p id="callState" class="muted">Incoming call...</p>
+    <div id="callBtns" class="call-btns">
+      <button id="declineCall" class="call-btn no">Decline</button>
+      <button id="acceptCall" class="call-btn yes">Accept</button>
+    </div>
+    <button id="endCall" class="call-btn no" hidden>End call</button>
+  </div>
+
+  <div id="recBar" hidden>
+    <span>Recording audio. Saved only on this phone.</span>
+    <button id="recStop">Stop</button>
+  </div>
+
+  <!-- ADD NEXT SCREEN (a new <main id="...">) ABOVE THIS LINE -->
+
+  <nav class="tabs">
+    <button data-tab="home" aria-current="page">Home</button>
+    <button data-tab="contacts">Contacts</button>
+    <button data-tab="tools">Tools</button>
+    <button data-tab="settings">Settings</button>
+  </nav>
+
+  <div id="toast" role="status" hidden></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

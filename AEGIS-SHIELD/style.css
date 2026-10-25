@@ -1,0 +1,521 @@
+/* ===== SHARED: colours and base styles ===== */
+/* Palette from the team's reference: indigo, sand, rose. Every screen uses these tokens. */
+:root {
+  --ink: #312c51; /* page background */
+  --panel: #48426d; /* cards */
+  --sand: #f0c38e; /* accents, active states */
+  --rose: #f1aa9b; /* SOS and urgent actions */
+  --text: #fbf6f0;
+  --muted: #c9c3e0;
+  --r-card: 22px;
+  --r-chip: 16px;
+}
+[hidden] {
+  display: none !important;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font-family: Nunito, system-ui, sans-serif;
+  font-weight: 500;
+  line-height: 1.5;
+}
+h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--sand);
+}
+h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+p {
+  margin: 0;
+}
+.muted {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.center {
+  text-align: center;
+}
+main {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 6px 18px 110px;
+  display: grid;
+  gap: 18px;
+}
+
+button {
+  font: inherit;
+  font-weight: 700;
+  color: inherit;
+  border: 0;
+  cursor: pointer;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--sand);
+  outline-offset: 3px;
+}
+
+.top {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn112 {
+  background: var(--sand);
+  color: var(--ink);
+  font-weight: 800;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: var(--r-chip);
+}
+
+.card {
+  background: var(--panel);
+  border-radius: var(--r-card);
+  padding: 18px;
+}
+
+.tabs {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 12px 14px;
+  background: var(--ink);
+  border-top: 1px solid var(--panel);
+}
+.tabs button {
+  flex: 1;
+  max-width: 120px;
+  background: none;
+  color: var(--muted);
+  padding: 12px 4px;
+  border-radius: var(--r-chip);
+}
+.tabs button[aria-current="page"] {
+  background: var(--sand);
+  color: var(--ink);
+}
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 96px;
+  transform: translateX(-50%);
+  background: var(--sand);
+  color: var(--ink);
+  font-weight: 700;
+  padding: 12px 18px;
+  border-radius: var(--r-chip);
+  max-width: 90%;
+  z-index: 50;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ===== HOME screen ===== */
+
+/* Status card: sand when ready, rose when something is missing */
+.status {
+  display: grid;
+  gap: 2px;
+  border-left: 6px solid var(--rose);
+}
+.status.ready {
+  border-left-color: var(--sand);
+}
+.status strong {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+/* SOS button: the outer circle is a progress ring that fills while you hold */
+.sos-area {
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  padding: 8px 0;
+}
+.sos {
+  --p: 0deg;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  padding: 14px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  background: conic-gradient(var(--sand) var(--p), rgba(240, 195, 142, 0.22) 0);
+}
+.sos .disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--rose);
+  color: var(--ink);
+  display: grid;
+  place-content: center;
+  gap: 2px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+.sos b {
+  font-size: 3.2rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+.sos small {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.sos.holding .disc {
+  transform: scale(0.96);
+  transition: transform 0.15s;
+}
+
+/* Quick actions */
+.quick {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.chip {
+  background: var(--panel);
+  padding: 16px 10px;
+  border-radius: var(--r-chip);
+  min-height: 56px;
+}
+.chip:active {
+  background: var(--sand);
+  color: var(--ink);
+}
+
+/* Checklist */
+.checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.checklist button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  background: var(--ink);
+  padding: 12px 14px;
+  border-radius: var(--r-chip);
+  min-height: 56px;
+}
+.checklist span {
+  display: grid;
+}
+.checklist small {
+  color: var(--muted);
+  font-weight: 500;
+}
+.tick {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--rose);
+  flex: none;
+  display: grid;
+  place-content: center;
+  font-style: normal;
+}
+.done .tick {
+  background: var(--sand);
+  border-color: var(--sand);
+}
+.done .tick::after {
+  content: "";
+  width: 6px;
+  height: 11px;
+  border: solid var(--ink);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+/* ===== CONTACTS screen ===== */
+.form {
+  display: grid;
+  gap: 14px;
+}
+.form label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.form input:not([type="checkbox"]),
+.form select,
+.form textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--ink);
+  border: 2px solid transparent;
+  border-radius: var(--r-chip);
+  padding: 14px;
+  min-height: 52px;
+}
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: var(--sand);
+}
+.form textarea {
+  resize: none;
+  min-height: 96px;
+}
+.form .switch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text);
+  font-size: 1rem;
+}
+.switch input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--sand);
+}
+.primary {
+  background: var(--sand);
+  color: var(--ink);
+  font-weight: 800;
+  padding: 15px;
+  border-radius: var(--r-chip);
+  min-height: 52px;
+}
+
+.contact-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--panel);
+  border-radius: var(--r-card);
+  padding: 14px;
+}
+.avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--sand);
+  color: var(--ink);
+  display: grid;
+  place-content: center;
+  font-weight: 800;
+  flex: none;
+}
+.c-info {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+.c-info small {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.c-actions {
+  display: flex;
+  gap: 8px;
+}
+.mini {
+  background: var(--ink);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: var(--r-chip);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.mini.danger {
+  color: var(--rose);
+}
+.contact-list .empty {
+  display: block;
+  color: var(--muted);
+}
+
+/* ===== SOS countdown + emergency dashboard ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 20px;
+  text-align: center;
+}
+.overlay.top {
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow: auto;
+  text-align: left;
+  padding-bottom: 40px;
+}
+.overlay.top > * {
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+  flex: none;
+}
+.cd-num {
+  font-size: 9rem;
+  font-weight: 800;
+  color: var(--rose);
+  line-height: 1;
+}
+.big-btn {
+  background: var(--panel);
+  padding: 18px 44px;
+  border-radius: var(--r-chip);
+  font-size: 1.1rem;
+  min-height: 60px;
+}
+.em-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.map {
+  height: 260px;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  background: var(--panel);
+}
+.info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+  margin: 0;
+}
+.info dt {
+  color: var(--muted);
+}
+.info dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ===== SETTINGS screen ===== */
+#settings .card .muted {
+  margin-top: 10px;
+}
+.danger-btn {
+  background: transparent;
+  color: var(--rose);
+  border: 2px solid var(--rose);
+  padding: 15px;
+  border-radius: var(--r-chip);
+  min-height: 52px;
+}
+
+/* ===== TOOLS: fake call + audio evidence ===== */
+.row2 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+.card .primary {
+  width: 100%;
+}
+#fakeCall {
+  z-index: 45;
+}
+.call-name {
+  font-size: 2.6rem;
+  font-weight: 800;
+}
+.call-btns {
+  display: flex;
+  gap: 36px;
+  margin-top: 40px;
+}
+.call-btn {
+  min-width: 120px;
+  min-height: 64px;
+  border-radius: 999px;
+  font-size: 1.05rem;
+}
+.call-btn.no {
+  background: var(--rose);
+  color: var(--ink);
+}
+.call-btn.yes {
+  background: var(--sand);
+  color: var(--ink);
+}
+#recBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: var(--rose);
+  color: var(--ink);
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 12px;
+}
+#recBar button {
+  background: var(--ink);
+  color: var(--text);
+  padding: 6px 14px;
+  border-radius: var(--r-chip);
+}
+.contact-list li.ev {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+.ev audio {
+  width: 100%;
+}
+.ev .c-actions {
+  justify-content: flex-end;
+}
+
+/* ===== ADD NEXT SCREEN'S CSS BELOW THIS LINE ===== */
