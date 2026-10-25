@@ -600,4 +600,72 @@ a:focus-visible {
   justify-content: flex-end;
 }
 
+/* ===== JUDGE NOTES table + NEARBY help ===== */
+.notes {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.notes thead {
+  position: absolute;
+  left: -9999px;
+} /* headings stay for screen readers; rows show their own labels */
+.notes tr {
+  display: block;
+  background: var(--ink);
+  border-radius: var(--r-chip);
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.notes td {
+  display: block;
+  padding: 4px 0;
+}
+.notes td::before {
+  content: attr(data-label);
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.badge.working {
+  background: var(--sand);
+  color: var(--ink);
+}
+.badge.prototype {
+  background: var(--rose);
+  color: var(--ink);
+}
+.badge.no {
+  border: 2px solid var(--rose);
+  color: var(--rose);
+}
+.contact-list li.care {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+.care-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.care-name {
+  font-weight: 700;
+}
+.care-meta {
+  color: var(--muted);
+}
+#careSection .map,
+#careSection .contact-list {
+  margin-top: 14px;
+}
+
 /* ===== ADD NEXT SCREEN'S CSS BELOW THIS LINE ===== */

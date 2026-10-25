@@ -413,6 +413,7 @@
           acc: p.coords.accuracy,
         };
         window.lastKnownPos = state.pos;
+        window.safemeLocation.set(state.pos);
         $("#coords").textContent =
           `${state.pos.lat.toFixed(5)}, ${state.pos.lng.toFixed(5)} (within ${Math.round(state.pos.acc)} m)`;
         $("#lastUpdate").textContent = new Date().toLocaleTimeString();
@@ -435,7 +436,9 @@
     $("#mapMsg").hidden = ok;
     if (!ok) return;
     if (!map) {
-      map = L.map("map").setView([20.6, 78.9], 4);
+      map = L.map("map");
+      map.fitWorld();
+      window.safemeMap = map;
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution: "&copy; OpenStreetMap",

@@ -124,6 +124,11 @@
       <h2>Alert your contacts</h2>
       <ul id="emContacts" class="contact-list"></ul>
     </section>
+    <section>
+      <button id="careSosBtn" class="chip">Find police and hospitals nearby</button>
+      <p id="careSosNote" class="muted" role="status"></p>
+      <ul id="careSosList" class="contact-list"></ul>
+    </section>
     <button class="chip rec-btn" data-label="Record audio evidence">Record audio evidence</button>
     <button id="stopBtn" class="primary">I am safe, stop SOS</button>
   </div>
@@ -224,6 +229,23 @@
       <h2 id="evTitle">Saved recordings</h2>
       <ul id="evList" class="contact-list"></ul>
     </section>
+
+    <section id="careSection" class="card">
+      <h2>Nearby help</h2>
+      <p class="muted">Finds police stations and hospitals within 5 km using OpenStreetMap data. This sends your
+        approximate position to the public Overpass service. Listings can be incomplete, so in an emergency call 112.
+      </p>
+      <button id="careBtn" class="primary">Find police and hospitals</button>
+      <p id="careStatus" class="muted" role="status"></p>
+      <div id="careMap" class="map" hidden></div>
+      <ul id="careList" class="contact-list"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Judge notes</h2>
+      <p id="notesIntro" class="muted"></p>
+      <div id="notesTable"></div>
+    </section>
   </main>
 
   <div id="fakeCall" class="overlay" hidden>
@@ -297,6 +319,9 @@
   <div id="toast" role="status" hidden></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/locationService.js"></script>
+  <script src="js/limitations.js"></script>
+  <script src="js/nearbyCare.js"></script>
   <script src="script.js"></script>
 </body>
 

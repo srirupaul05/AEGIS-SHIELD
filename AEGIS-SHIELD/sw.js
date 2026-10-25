@@ -1,6 +1,6 @@
 // sw.js - service worker: lets AEGIS-SHIELD open without internet.
 // Strategy: try the network first so updates always show up, and fall back to the saved copy when offline.
-const CACHE = "aegis-shield-v1";
+const CACHE = "aegis-shield-v2";
 const SHELL = [
   "./",
   "index.html",
@@ -9,6 +9,9 @@ const SHELL = [
   "manifest.json",
   "icons/icon-192.png",
   "icons/icon-512.png",
+  "js/locationService.js",
+  "js/limitations.js",
+  "js/nearbyCare.js",
 ];
 const LIBS = [
   "cdnjs.cloudflare.com",
