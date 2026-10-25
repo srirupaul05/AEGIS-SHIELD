@@ -213,14 +213,57 @@
   </main>
 
   <div id="fakeCall" class="overlay" hidden>
-    <p class="muted">mobile</p>
-    <div id="callName" class="call-name">Mom</div>
-    <p id="callState" class="muted">Incoming call...</p>
-    <div id="callBtns" class="call-btns">
-      <button id="declineCall" class="call-btn no">Decline</button>
-      <button id="acceptCall" class="call-btn yes">Accept</button>
+    <div id="callIncoming" class="call-screen">
+      <p class="call-top">Incoming call</p>
+      <div class="call-avatar js-initial">M</div>
+      <div class="call-name js-name">Mom</div>
+      <p class="call-sub">Mobile</p>
+      <div class="call-actions">
+        <div><button id="declineCall" class="round red" aria-label="Decline"><svg class="ico down" viewBox="0 0 24 24"
+              width="32" height="32" fill="currentColor" aria-hidden="true">
+              <path
+                d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z" />
+            </svg></button><span>Decline</span></div>
+        <div><button id="acceptCall" class="round green" aria-label="Accept"><svg class="ico" viewBox="0 0 24 24"
+              width="32" height="32" fill="currentColor" aria-hidden="true">
+              <path
+                d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z" />
+            </svg></button><span>Accept</span></div>
+      </div>
     </div>
-    <button id="endCall" class="call-btn no" hidden>End call</button>
+    <div id="callActive" class="call-screen" hidden>
+      <div class="call-avatar small js-initial">M</div>
+      <div class="call-name js-name">Mom</div>
+      <p id="callState" class="call-sub">00:00</p>
+      <div class="call-grid">
+        <div><button aria-label="Mute"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"
+              aria-hidden="true">
+              <path
+                d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11h-2z" />
+            </svg></button><span>Mute</span></div>
+        <div><button aria-label="Keypad"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"
+              aria-hidden="true">
+              <circle cx="6" cy="5" r="2" />
+              <circle cx="12" cy="5" r="2" />
+              <circle cx="18" cy="5" r="2" />
+              <circle cx="6" cy="12" r="2" />
+              <circle cx="12" cy="12" r="2" />
+              <circle cx="18" cy="12" r="2" />
+              <circle cx="6" cy="19" r="2" />
+              <circle cx="12" cy="19" r="2" />
+              <circle cx="18" cy="19" r="2" />
+            </svg></button><span>Keypad</span></div>
+        <div><button aria-label="Speaker"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"
+              aria-hidden="true">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 00-2.5-4.03v8.05A4.47 4.47 0 0016.5 12z" />
+            </svg></button><span>Speaker</span></div>
+      </div>
+      <button id="endCall" class="round red end" aria-label="End call"><svg class="ico down" viewBox="0 0 24 24"
+          width="32" height="32" fill="currentColor" aria-hidden="true">
+          <path
+            d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z" />
+        </svg></button>
+    </div>
   </div>
 
   <div id="recBar" hidden>

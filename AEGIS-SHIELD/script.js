@@ -701,11 +701,17 @@
   labels();
   document.addEventListener("tab:changed", labels);
 
-  // ---------- fake call ----------
+  // ---------- fake call (looks like a real phone call) ----------
+  const FAKE_LINES = [
+    "Hello? Where are you?",
+    "I have been trying to reach you.",
+    "Come home now, it is important.",
+  ];
   let ctx = null,
     ringTimer = null,
     callTimer = null,
-    pending = null;
+    pending = null,
+    speakTimer = null;
   function tone() {
     // two-tone phone ring made in the browser, no audio file needed
     if (!ctx) return;
@@ -722,10 +728,15 @@
   }
   function ring() {
     if (!$("#fakeCall").hidden) return;
-    $("#callName").textContent = cfg().fakeCaller || "Mom";
-    $("#callState").textContent = "Incoming call...";
-    $("#callBtns").hidden = false;
-    $("#endCall").hidden = true;
+    const name = cfg().fakeCaller || "Mom";
+    document
+      .querySelectorAll(".js-name")
+      .forEach((n) => (n.textContent = name));
+    document
+      .querySelectorAll(".js-initial")
+      .forEach((n) => (n.textContent = name.charAt(0).toUpperCase()));
+    $("#callIncoming").hidden = false;
+    $("#callActive").hidden = true;
     $("#fakeCall").hidden = false;
     const buzz = () => {
       tone();
@@ -748,8 +759,19 @@
   function hangUp() {
     clearInterval(ringTimer);
     clearInterval(callTimer);
+    clearTimeout(speakTimer);
+    if (window.speechSynthesis) speechSynthesis.cancel();
     if (navigator.vibrate) navigator.vibrate(0);
     $("#fakeCall").hidden = true;
+  }
+  // After you answer, the phone's own voice says a few lines, one after another.
+  function speak(i) {
+    if (!window.speechSynthesis || i >= FAKE_LINES.length) return;
+    const u = new SpeechSynthesisUtterance(FAKE_LINES[i]);
+    u.onend = () => {
+      speakTimer = setTimeout(() => speak(i + 1), 2500);
+    };
+    speechSynthesis.speak(u);
   }
   $("#fakeLater").onclick = () => schedule(Number(cfg().fakeDelay) || 10);
   $("#fakeNow").onclick = () => schedule(0);
@@ -758,18 +780,22 @@
   ); // Home quick action
   $("#declineCall").onclick = hangUp;
   $("#endCall").onclick = hangUp;
+  document
+    .querySelectorAll(".call-grid button")
+    .forEach((b) => (b.onclick = () => b.classList.toggle("on")));
   $("#acceptCall").onclick = () => {
     clearInterval(ringTimer);
     if (navigator.vibrate) navigator.vibrate(0);
-    $("#callBtns").hidden = true;
-    $("#endCall").hidden = false;
+    $("#callIncoming").hidden = true;
+    $("#callActive").hidden = false;
     let s = 0;
-    $("#callState").textContent = "0:00";
+    $("#callState").textContent = "00:00";
     callTimer = setInterval(() => {
       s++;
       $("#callState").textContent =
-        `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+        `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
     }, 1000);
+    speakTimer = setTimeout(() => speak(0), 1200);
   };
 
   // ---------- evidence storage (IndexedDB, stays on this phone) ----------
