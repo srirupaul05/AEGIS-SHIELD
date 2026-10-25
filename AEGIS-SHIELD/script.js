@@ -938,4 +938,62 @@
   renderEvidence().catch(() => {});
 })();
 
+// ===== PWA: install button + offline support =====
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const toast = (m) => {
+    const t = $("#toast");
+    t.textContent = m;
+    t.hidden = false;
+    clearTimeout(toast.id);
+    toast.id = setTimeout(() => (t.hidden = true), 3500);
+  };
+
+  // The service worker (sw.js) saves the app so it opens offline. It only runs on https or localhost.
+  if (
+    "serviceWorker" in navigator &&
+    (location.protocol === "https:" || location.hostname === "localhost")
+  ) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+
+  const standalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    navigator.standalone;
+  let prompt = null;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    // Chrome and Edge on Android and desktop
+    e.preventDefault();
+    prompt = e;
+    if (!standalone) {
+      $("#installBtn").hidden = false;
+      $("#installCard").hidden = false;
+    }
+  });
+  $("#installBtn").onclick = async () => {
+    if (!prompt) return;
+    prompt.prompt();
+    await prompt.userChoice;
+    prompt = null;
+    $("#installCard").hidden = true;
+  };
+  window.addEventListener("appinstalled", () => {
+    $("#installCard").hidden = true;
+    toast("AEGIS-SHIELD installed");
+  });
+
+  // iPhones have no install button, so show the steps instead.
+  if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone) {
+    $("#installText").textContent =
+      "On iPhone: tap the Share button in Safari, then Add to Home Screen.";
+    $("#installBtn").hidden = true;
+    $("#installCard").hidden = false;
+  }
+
+  window.addEventListener("offline", () =>
+    toast("You are offline. Maps need internet. Everything else still works."),
+  );
+  window.addEventListener("online", () => toast("Back online"));
+})();
+
 // ===== ADD NEXT SCREEN'S JS ABOVE THIS LINE =====

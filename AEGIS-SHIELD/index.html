@@ -5,6 +5,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AEGIS-SHIELD</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#312C51">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="AEGIS-SHIELD">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
@@ -176,6 +183,13 @@
         </label>
       </div>
       <p class="muted">Helps stop accidental alerts. If the check fails, hold SOS again. Call 112 always works.</p>
+    </div>
+
+    <div class="card" id="installCard" hidden>
+      <h2>Install the app</h2>
+      <p id="installText" class="muted">Add AEGIS-SHIELD to your home screen. It opens full screen and works without
+        internet.</p>
+      <button id="installBtn" class="primary">Install</button>
     </div>
 
     <div class="card">
