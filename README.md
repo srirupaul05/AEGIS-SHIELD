@@ -6,7 +6,8 @@ AEGIS-SHIELD is a personal safety and emergency-response web application. With a
 
 Built for the online hackathon **Axion** by team **Ciao Bella**.
 
-Live demo: https://aegis-shield-gamma.vercel.app
+Live Demo (Demo Site) : https://aegis-shield-pearl.vercel.app
+Live demo (Actual Site): https://aegis-shield-gamma.vercel.app
 
 ---
 
