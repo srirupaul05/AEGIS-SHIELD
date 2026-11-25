@@ -1,8 +1,8 @@
-# SAFEME-AL
+# AEGIS-SHIELD
 
 **One emergency trigger, multiple layers of protection.**
 
-SAFEME-AL is a personal safety and emergency-response web application. With a single trigger, a user can start an emergency mode that gets their location, alerts trusted contacts, keeps sharing location at regular intervals, and offers extra safety tools such as a fake incoming call and evidence capture.
+AEGIS-SHIELD is a personal safety and emergency-response web application. With a single trigger, a user can start an emergency mode that gets their location, alerts trusted contacts, keeps sharing location at regular intervals, and offers extra safety tools such as a fake incoming call and evidence capture.
 
 Built for the online hackathon **Axion** by team **Ciao Bella**.
 
@@ -10,22 +10,6 @@ Live demo: https://aegis-shield-gamma.vercel.app
 
 ---
 
-## Table of Contents
-
-1. [Problem](#problem)
-2. [Features](#features)
-3. [How the SOS Flow Works](#how-the-sos-flow-works)
-4. [Tech Stack](#tech-stack)
-5. [Project Structure](#project-structure)
-6. [Setup and Installation](#setup-and-installation)
-7. [Environment Variables](#environment-variables)
-8. [API Overview](#api-overview)
-9. [Limitations and Honest Scope](#limitations-and-honest-scope)
-10. [Security and Privacy](#security-and-privacy)
-11. [Team and Workflow](#team-and-workflow)
-12. [Future Scope](#future-scope)
-
----
 
 ## Problem
 
